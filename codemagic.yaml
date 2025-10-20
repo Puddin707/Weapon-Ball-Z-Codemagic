@@ -93,19 +93,24 @@ workflows:
             echo "ℹ️ Không có $IOS_DIR/Podfile — bỏ qua CocoaPods."
           fi
 
-      # --- SIGNING (đÃ SỬA ĐÚNG CÚ PHÁP) ---
+      # --- SIGNING (SỬA LẠI CHO CHẮC CHẮN VỀ CREDENTIAL NAMES) ---
       - name: Fetch signing files from App Store Connect
         script: |
           set -euo pipefail
           keychain initialize
-          # Lệnh đúng: không có --bundle-identifier/--output
+
+          # Map biến: Codemagic hay dùng KEY_ID, CLI cần KEY_IDENTIFIER
+          export APP_STORE_CONNECT_KEY_IDENTIFIER="${APP_STORE_CONNECT_KEY_IDENTIFIER:-${APP_STORE_CONNECT_KEY_ID:-}}"
+
+          # Truyền thẳng 3 flag để khỏi lệ thuộc alias env
           app-store-connect fetch-signing-files "$APP_BUNDLE_ID" \
             --type IOS_APP_STORE \
-            --create
-          # Nếu team bạn chưa bật integration trong Codemagic, thêm 3 flag:
-          #   --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
-          #   --key-id "$APP_STORE_CONNECT_KEY_ID" \
-          #   --private-key "$APP_STORE_CONNECT_PRIVATE_KEY"
+            --create \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --private-key "$APP_STORE_CONNECT_PRIVATE_KEY"
+
+          # Kiểm tra đã fetch được gì chưa
           ls -la ~/Library/codemagic-cli-tools/profiles || true
           ls -la ~/Library/codemagic-cli-tools/certificates || true
 
@@ -113,9 +118,11 @@ workflows:
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
-          # Import tất cả certs đã được fetch (CLI tự lấy đường dẫn mặc định)
+
+          # Import tất cả certs đã fetch; nếu .p12 có password, set CERT_PASSWORD
           keychain add-certificates --password "${CERT_PASSWORD:-}"
-          # Áp profile/cert vào project (tự tìm profile phù hợp bundle)
+
+          # Áp profile/cert vào project (CLI tự tìm profile phù hợp theo bundle id)
           xcode-project use-profiles --project "$IOS_DIR/Unity-iPhone.xcodeproj" || true
       # --- END SIGNING ---
 
