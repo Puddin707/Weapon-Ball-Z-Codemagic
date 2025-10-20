@@ -1,0 +1,36 @@
+{
+  "project_info": {
+    "project_number": "468734717150",
+    "project_id": "weapon-ball",
+    "storage_bucket": "weapon-ball.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468734717150:ios:dfbc071d03062bc4e0e64f",
+        "android_client_info": {
+          "package_name": "com.galacticozstudio.weaponballz"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5exPggE1IqMXfd8od_-ZxcDRqlpZE_xA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "468734717150-v5mmu5kr1g8u4427243i4nlpldkb7vk1.apps.googleusercontent.com"
+        }
+      ]
+    }
+  ],
+  "configuration_version": "1"
+}

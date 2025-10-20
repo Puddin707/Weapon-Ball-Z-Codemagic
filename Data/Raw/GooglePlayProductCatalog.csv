@@ -1,0 +1,6 @@
+Product ID,Published State,Purchase Type,Auto Translate,Locale; Title; Description,Auto Fill Prices,Price,Pricing Template ID
+hard_25,published,managed_by_android,false,en_US;Hard Pack x25;Get 25 Diamonds,true,99000000,
+hard_50,published,managed_by_android,false,en_US;Hard Pack x50;Get 50 Diamonds,true,199000000,
+hard_100,published,managed_by_android,false,en_US;Hard Pack x100;Get 100 Diamonds,true,399000000,
+hard_500,published,managed_by_android,false,en_US;Hard Pack x500;Get 500 Diamonds,true,999000000,
+hard_1000,published,managed_by_android,false,en_US;Hard Pack x1000;Get 1000 Diamonds,true,1999000000,

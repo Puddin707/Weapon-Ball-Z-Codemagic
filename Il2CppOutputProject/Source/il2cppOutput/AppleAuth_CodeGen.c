@@ -1,0 +1,474 @@
+﻿#include "pch-c.h"
+#ifndef _MSC_VER
+# include <alloca.h>
+#else
+# include <malloc.h>
+#endif
+
+
+#include "codegen/il2cpp-codegen-metadata.h"
+
+
+extern const RuntimeMethod* PInvoke_NativeMessageHandlerCallback_m510C41EC925617E298CB67DC823D4680FA08F45F_RuntimeMethod_var;
+
+
+
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_m2C102A0F726B5484E567261E97CE6BEB136E7C30 (void);
+extern void UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_m75AA708CC9D3D15EEA873E210571B2CDE86B84AA (void);
+extern void AppleAuthLoginArgs__ctor_m979F04437958F29BD5E8FBB8B91085932E47DEC2 (void);
+extern void AppleAuthManager__cctor_mD2B1F2782B50BD07F7EE6DF67CE2BCD0196CD1C1 (void);
+extern void AppleAuthManager_get_IsCurrentPlatformSupported_m7A452E34F3B87A9FBF6F9E79DAD9792B87AB9B9C (void);
+extern void AppleAuthManager__ctor_mFCE1994D8BD7BFCC9EA201E091A1C09BF63945B3 (void);
+extern void AppleAuthManager_QuickLogin_m50DC36CEED4EFA9A98B758F7BE696F01D3957506 (void);
+extern void AppleAuthManager_QuickLogin_m6729A39051EC9885AD1668BA28B94B9489D39F08 (void);
+extern void AppleAuthManager_LoginWithAppleId_m7F9D42479BB718C417A879E00F86EA3844B0405F (void);
+extern void AppleAuthManager_LoginWithAppleId_m41AA28DCBBCED940184CCD2D353C8B8D7E3EA355 (void);
+extern void AppleAuthManager_GetCredentialState_m7646C8E8F7DFA9A8C77E576C39DFE4059BE5AD02 (void);
+extern void AppleAuthManager_SetCredentialsRevokedCallback_m0C1A9F85CAE89C2AAAB94863C48F535D315E0CBA (void);
+extern void AppleAuthManager_Update_mE6CCC051DC13A8B6A838B4E52CEFDA6683B0956A (void);
+extern void CallbackHandler_add__nativeCredentialsRevoked_m5D7E3690C42D9E83B6C8572A40769799D0EF1220 (void);
+extern void CallbackHandler_remove__nativeCredentialsRevoked_m7E18545307ADF5A1D248891D64E7FA51B6F79884 (void);
+extern void CallbackHandler_add_NativeCredentialsRevoked_mE9EA0A2C16E9564216BC8BDA8E4C05DF4D055121 (void);
+extern void CallbackHandler_remove_NativeCredentialsRevoked_mEC959A767B611314A71B3C635A24F223E777E3EA (void);
+extern void CallbackHandler_ScheduleCallback_m7A3460CE649C1A2B51492597FA9F5E9DDB89406D (void);
+extern void CallbackHandler_ExecutePendingCallbacks_mD5F4180A0D7996EB856E3AE976E1BBD90ECC93D1 (void);
+extern void CallbackHandler_AddMessageCallback_m7BEDE05BEB412AF3DEB6CD527472640FE22E9AE2 (void);
+extern void CallbackHandler_RemoveMessageCallback_m7FA97AB2F4C5F2EE6EB2F22D66A1914ED6177F15 (void);
+extern void CallbackHandler__cctor_m2D32CA54993434AD2CA0EB7170D53B92BFC4D304 (void);
+extern void Entry__ctor_m380C3A5A8A6F883166C588B47AD54C4541CE9CF8 (void);
+extern void U3CU3Ec__cctor_m5CBEAB6C3DCD5596040B98D62F6D3BD3942A7FD8 (void);
+extern void U3CU3Ec__ctor_m81FE8FF693A86323B97BB4F980CCDCF949ED8022 (void);
+extern void U3CU3Ec_U3Cadd_NativeCredentialsRevokedU3Eb__12_0_mFE258627F231E683FC1129339EDE4F2E0FC39B07 (void);
+extern void U3CU3Ec__DisplayClass14_0__ctor_mD17FF5C1DFA80788F7BB5B85F76747607D53259A (void);
+extern void U3CU3Ec__DisplayClass14_0_U3CScheduleCallbackU3Eb__0_mA2FD9C547DE397DBF4A9CB55A58DB8A49189056C (void);
+extern void PInvoke_NativeMessageHandlerCallback_m510C41EC925617E298CB67DC823D4680FA08F45F (void);
+extern void PInvoke_AppleAuth_IsCurrentPlatformSupported_m1D0BC97BB9AC27234B22D189B6EFBC1570E01B8C (void);
+extern void PInvoke_AppleAuth_SetupNativeMessageHandlerCallback_m26C21940BFD413639886B1FC0752F9EAAA510ED5 (void);
+extern void PInvoke_AppleAuth_GetCredentialState_m4C124585736F00808CAC0EC751B7A779C8AFEF67 (void);
+extern void PInvoke_AppleAuth_LoginWithAppleId_mA55B5A725DB6F8A96535A994D9CF898E70AD518C (void);
+extern void PInvoke_AppleAuth_QuickLogin_m7EE5E943C692E647BDBC32215ACA6889F0C5327F (void);
+extern void PInvoke_AppleAuth_RegisterCredentialsRevokedCallbackId_mD23CF91E7D35895F2DEF1E8CE6B554A9DE7A632E (void);
+extern void PInvoke_AppleAuth_LogMessage_m60AF75CCF6435A2339DDA9976960279C11EE0962 (void);
+extern void NativeMessageHandlerCallbackDelegate__ctor_m446D66B7830A1B2B84860F4DC71A49C94FBF2FE5 (void);
+extern void NativeMessageHandlerCallbackDelegate_Invoke_mF85F2F3E95138E0B6614814C7D12145DE4C6EF83 (void);
+extern void NativeMessageHandlerCallbackDelegate_BeginInvoke_mE5DFC45BAA25A4D72F68220BD0C09DBAEDD87047 (void);
+extern void NativeMessageHandlerCallbackDelegate_EndInvoke_mD56C5681060A90E8A53311AA10FAB883C004C6A5 (void);
+extern void U3CU3Ec__DisplayClass10_0__ctor_m83CFB8A37B12FAEE14ED986417758C39BB9F1345 (void);
+extern void U3CU3Ec__DisplayClass10_0_U3CGetCredentialStateU3Eb__0_m4CBAD6BECC864AC8B2CA622143F947A03CE463A1 (void);
+extern void U3CU3Ec__DisplayClass7_0__ctor_mAE116B3D7F66A8ED65FE651498E0C85EC8427034 (void);
+extern void U3CU3Ec__DisplayClass7_0_U3CQuickLoginU3Eb__0_m4FB5F95D60AAA665EDAFD1B024E168A2FD2005A5 (void);
+extern void U3CU3Ec__DisplayClass9_0__ctor_mCC665036E869E13B6E82BD8E59B9CACCB378AA7E (void);
+extern void U3CU3Ec__DisplayClass9_0_U3CLoginWithAppleIdU3Eb__0_mD11AED144D9782C535C6704EB8A81E18D7D70B2A (void);
+extern void AppleAuthQuickLoginArgs__ctor_m29E70947A3CB463F0138B6F58BC35EA58A851AB4 (void);
+extern void AppleError_get_Code_m961287BECF360B2EDAD83FA060A8C7FDB6418FD5 (void);
+extern void AppleError_get_Domain_m63E5CABE6AF7F50CC0FB9B9C55D074AC01D22DDF (void);
+extern void AppleError_get_LocalizedDescription_m430AE126F8F82BCD7D41545FC20102B666C700E5 (void);
+extern void AppleError_get_LocalizedRecoveryOptions_m70B334E472068D36B4797AF8BE86C641E347F564 (void);
+extern void AppleError_get_LocalizedRecoverySuggestion_m2CA60B369F391895F8307B37BB767122522B29A9 (void);
+extern void AppleError_get_LocalizedFailureReason_m51C96BF4FE7F7E50B5739793C800343D05489DB9 (void);
+extern void AppleError_OnBeforeSerialize_mAEAD2F39FA81174491484481AD72D7B005DB67F7 (void);
+extern void AppleError_OnAfterDeserialize_m0BCD7127B5E7D5505CE32993DA8F2A4D2AA592E2 (void);
+extern void AppleError_ToString_m288F1388415E5031ED251BD778FED627F9BC0DC5 (void);
+extern void AppleError__ctor_m66C93CADE0B99B97DD2891FDA0B886E2B02AADD1 (void);
+extern void AppleIDCredential_get_IdentityToken_m34B56460123F4D5FA0F3F0E9F11889E776583355 (void);
+extern void AppleIDCredential_get_AuthorizationCode_mF451C6107719D30009CC68965869BA7C0BD50CE8 (void);
+extern void AppleIDCredential_get_State_m84B3905825D39FD46B45AF489FA8163247C74278 (void);
+extern void AppleIDCredential_get_User_m981CFCEE8723C5A25E0C1F4DA3289D9831EA57F5 (void);
+extern void AppleIDCredential_get_AuthorizedScopes_m1FC899AEECADDD9871C8622C6F08E73E812C9D92 (void);
+extern void AppleIDCredential_get_FullName_mFD2563DD49DE8936E5F71447BA75E5D1836402D8 (void);
+extern void AppleIDCredential_get_Email_m714C9A646F5DFE85592A0E4A9FD3E68689685ABE (void);
+extern void AppleIDCredential_get_RealUserStatus_mE69FF5EC598FB13CF28741DC57528CC2FFB9CF9E (void);
+extern void AppleIDCredential_OnBeforeSerialize_m131D67351E1C50C5B86C9DF5524BDDDE44AA0E61 (void);
+extern void AppleIDCredential_OnAfterDeserialize_mB5366B49FF04AF0671E94C27ED9A3715EEB295C9 (void);
+extern void AppleIDCredential__ctor_m51A44FA1D980EC9AF22D63D6072DB75A6FA01C63 (void);
+extern void CredentialStateResponse_get_Success_m2AE6E6E1D34B0114F4C52C039174DDF9AFA6BC4D (void);
+extern void CredentialStateResponse_get_CredentialState_m65D7E15BA3EC5C3A7F367597A050193DD4209797 (void);
+extern void CredentialStateResponse_get_Error_m57C00B45E8F57B0BE47A95942C096E33EE75E13C (void);
+extern void CredentialStateResponse_OnBeforeSerialize_mAC5BB42DE4654E67E38843519A7DC253F50850B5 (void);
+extern void CredentialStateResponse_OnAfterDeserialize_mFB21B4973EF797A938B387C7055C5929051AEE60 (void);
+extern void CredentialStateResponse__ctor_mD9EDB0D8782201A4B143772B6FE1140C1A20A6B3 (void);
+extern void FullPersonName_get_PhoneticRepresentation_m4C047353D1B6B779000A36AD5A9E95112FB4B78D (void);
+extern void FullPersonName_OnAfterDeserialize_mD8D3FA785A18B097DA24A5346927BCE5891E2726 (void);
+extern void FullPersonName__ctor_m26740204D45973B681D9A56AAEA22BA07054781B (void);
+extern void LoginWithAppleIdResponse_get_Success_mE6C377A510A993911F409C936A65584C9049779C (void);
+extern void LoginWithAppleIdResponse_get_Error_mCCC27C3D0F46A1D52F2CE2D969005696E8E5AE76 (void);
+extern void LoginWithAppleIdResponse_get_AppleIDCredential_m8621F583B1DC2542599CD2C3A666A478660B2366 (void);
+extern void LoginWithAppleIdResponse_get_PasswordCredential_mF712CF23994A66D33B5AE81DE4DB37BFE0900DD0 (void);
+extern void LoginWithAppleIdResponse_OnBeforeSerialize_m7921D7B73269C8D01C61CD21A99F2D25E2A768D3 (void);
+extern void LoginWithAppleIdResponse_OnAfterDeserialize_m5F4392761E520B362F204ADAA71470944CCB7226 (void);
+extern void LoginWithAppleIdResponse__ctor_m559AF38D99EA5F01245B730C66C0C575A7D1DFA5 (void);
+extern void PasswordCredential_get_User_m14F3321F1778473BAD88C092D9DB7E4E6EBA2BFE (void);
+extern void PasswordCredential_get_Password_m550FE9C9FFC658487D37E4CCBC81646AAA0B6971 (void);
+extern void PasswordCredential_OnBeforeSerialize_m4BFB71F9E84B9BF858BD2B79B725972821DFE288 (void);
+extern void PasswordCredential_OnAfterDeserialize_m16D32A34A6F6046F6333F7BB5F69193B37D0F2F5 (void);
+extern void PasswordCredential__ctor_m752B85E2013BE8BDA5F98F2E2BFF18BDFBF7676D (void);
+extern void PayloadDeserializer_DeserializeCredentialStateResponse_mD711A60594EEB3B4A2B82769E58C745CC50FD516 (void);
+extern void PayloadDeserializer_DeserializeLoginWithAppleIdResponse_mDD6FE763342C1ADB26C95A9F07ECE906FD33D22A (void);
+extern void PayloadDeserializer__ctor_mFBD229EF68EBE24EC32CA9609AA005AB90C65C42 (void);
+extern void PersonName_get_NamePrefix_mD8E065B1341FE87F408B1A43AC98AB752EC37792 (void);
+extern void PersonName_get_GivenName_m0284F3BF19006384CE40D9F2584E9B898E3167BB (void);
+extern void PersonName_get_MiddleName_mCFAC728FA738FF02EA1673A41528F15E771B0127 (void);
+extern void PersonName_get_FamilyName_mFF3940EE55E62FC22A6CFA6975BCCFF796D6BB26 (void);
+extern void PersonName_get_NameSuffix_m28CC64A01463A58CF35EFC6A4CE6CFADCB2518E8 (void);
+extern void PersonName_get_Nickname_m678081BDCCFFD3DED731F9AB66F7FB350166B4C1 (void);
+extern void PersonName_get_PhoneticRepresentation_m89AA341DA25ACEBFAA1E062842E646B1165A99DB (void);
+extern void PersonName_OnBeforeSerialize_m4D57A809AC62FE6817EB498247E4AEE5B8B0B510 (void);
+extern void PersonName_OnAfterDeserialize_m62A1515986426365B43F5A7BF5B7FB130EDA0D6E (void);
+extern void PersonName__ctor_m0F0E4933C32F156BAA3F4DB66D4BE72313F76C55 (void);
+extern void SerializationTools_FixSerializationForString_mF3AF273F198E247A988066CBE929451830480D5F (void);
+extern void SerializationTools_GetBytesFromBase64String_m4C24E80BE8646637F981906DDC1DC001C4785D9F (void);
+extern void AppleErrorExtensions_GetAuthorizationErrorCode_m2D356E9280D7A2C580B337A9CCC9B65E32746219 (void);
+extern void PersonNameExtensions_ToLocalizedString_mD357263F722B7C188313D67D6C54495393189E83 (void);
+extern void PersonNameExtensions_JsonStringForPersonName_m2A357011D95700D4B9746149A1F9E66233A468FD (void);
+extern void PersonNameExtensions_TryAddKeyValue_mF2DF9ED2C6B7FC8D497AD58CDDD250B090D13FDB (void);
+extern void PInvoke_AppleAuth_GetPersonNameUsingFormatter_mE6BD0DE775A27C2C2A3878458E1F38B411908F5E (void);
+static Il2CppMethodPointer s_methodPointers[149] = 
+{
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1_Get_m2C102A0F726B5484E567261E97CE6BEB136E7C30,
+	UnitySourceGeneratedAssemblyMonoScriptTypes_v1__ctor_m75AA708CC9D3D15EEA873E210571B2CDE86B84AA,
+	AppleAuthLoginArgs__ctor_m979F04437958F29BD5E8FBB8B91085932E47DEC2,
+	AppleAuthManager__cctor_mD2B1F2782B50BD07F7EE6DF67CE2BCD0196CD1C1,
+	AppleAuthManager_get_IsCurrentPlatformSupported_m7A452E34F3B87A9FBF6F9E79DAD9792B87AB9B9C,
+	AppleAuthManager__ctor_mFCE1994D8BD7BFCC9EA201E091A1C09BF63945B3,
+	AppleAuthManager_QuickLogin_m50DC36CEED4EFA9A98B758F7BE696F01D3957506,
+	AppleAuthManager_QuickLogin_m6729A39051EC9885AD1668BA28B94B9489D39F08,
+	AppleAuthManager_LoginWithAppleId_m7F9D42479BB718C417A879E00F86EA3844B0405F,
+	AppleAuthManager_LoginWithAppleId_m41AA28DCBBCED940184CCD2D353C8B8D7E3EA355,
+	AppleAuthManager_GetCredentialState_m7646C8E8F7DFA9A8C77E576C39DFE4059BE5AD02,
+	AppleAuthManager_SetCredentialsRevokedCallback_m0C1A9F85CAE89C2AAAB94863C48F535D315E0CBA,
+	AppleAuthManager_Update_mE6CCC051DC13A8B6A838B4E52CEFDA6683B0956A,
+	CallbackHandler_add__nativeCredentialsRevoked_m5D7E3690C42D9E83B6C8572A40769799D0EF1220,
+	CallbackHandler_remove__nativeCredentialsRevoked_m7E18545307ADF5A1D248891D64E7FA51B6F79884,
+	CallbackHandler_add_NativeCredentialsRevoked_mE9EA0A2C16E9564216BC8BDA8E4C05DF4D055121,
+	CallbackHandler_remove_NativeCredentialsRevoked_mEC959A767B611314A71B3C635A24F223E777E3EA,
+	CallbackHandler_ScheduleCallback_m7A3460CE649C1A2B51492597FA9F5E9DDB89406D,
+	CallbackHandler_ExecutePendingCallbacks_mD5F4180A0D7996EB856E3AE976E1BBD90ECC93D1,
+	CallbackHandler_AddMessageCallback_m7BEDE05BEB412AF3DEB6CD527472640FE22E9AE2,
+	CallbackHandler_RemoveMessageCallback_m7FA97AB2F4C5F2EE6EB2F22D66A1914ED6177F15,
+	CallbackHandler__cctor_m2D32CA54993434AD2CA0EB7170D53B92BFC4D304,
+	Entry__ctor_m380C3A5A8A6F883166C588B47AD54C4541CE9CF8,
+	U3CU3Ec__cctor_m5CBEAB6C3DCD5596040B98D62F6D3BD3942A7FD8,
+	U3CU3Ec__ctor_m81FE8FF693A86323B97BB4F980CCDCF949ED8022,
+	U3CU3Ec_U3Cadd_NativeCredentialsRevokedU3Eb__12_0_mFE258627F231E683FC1129339EDE4F2E0FC39B07,
+	U3CU3Ec__DisplayClass14_0__ctor_mD17FF5C1DFA80788F7BB5B85F76747607D53259A,
+	U3CU3Ec__DisplayClass14_0_U3CScheduleCallbackU3Eb__0_mA2FD9C547DE397DBF4A9CB55A58DB8A49189056C,
+	PInvoke_NativeMessageHandlerCallback_m510C41EC925617E298CB67DC823D4680FA08F45F,
+	PInvoke_AppleAuth_IsCurrentPlatformSupported_m1D0BC97BB9AC27234B22D189B6EFBC1570E01B8C,
+	PInvoke_AppleAuth_SetupNativeMessageHandlerCallback_m26C21940BFD413639886B1FC0752F9EAAA510ED5,
+	PInvoke_AppleAuth_GetCredentialState_m4C124585736F00808CAC0EC751B7A779C8AFEF67,
+	PInvoke_AppleAuth_LoginWithAppleId_mA55B5A725DB6F8A96535A994D9CF898E70AD518C,
+	PInvoke_AppleAuth_QuickLogin_m7EE5E943C692E647BDBC32215ACA6889F0C5327F,
+	PInvoke_AppleAuth_RegisterCredentialsRevokedCallbackId_mD23CF91E7D35895F2DEF1E8CE6B554A9DE7A632E,
+	PInvoke_AppleAuth_LogMessage_m60AF75CCF6435A2339DDA9976960279C11EE0962,
+	NativeMessageHandlerCallbackDelegate__ctor_m446D66B7830A1B2B84860F4DC71A49C94FBF2FE5,
+	NativeMessageHandlerCallbackDelegate_Invoke_mF85F2F3E95138E0B6614814C7D12145DE4C6EF83,
+	NativeMessageHandlerCallbackDelegate_BeginInvoke_mE5DFC45BAA25A4D72F68220BD0C09DBAEDD87047,
+	NativeMessageHandlerCallbackDelegate_EndInvoke_mD56C5681060A90E8A53311AA10FAB883C004C6A5,
+	U3CU3Ec__DisplayClass10_0__ctor_m83CFB8A37B12FAEE14ED986417758C39BB9F1345,
+	U3CU3Ec__DisplayClass10_0_U3CGetCredentialStateU3Eb__0_m4CBAD6BECC864AC8B2CA622143F947A03CE463A1,
+	U3CU3Ec__DisplayClass7_0__ctor_mAE116B3D7F66A8ED65FE651498E0C85EC8427034,
+	U3CU3Ec__DisplayClass7_0_U3CQuickLoginU3Eb__0_m4FB5F95D60AAA665EDAFD1B024E168A2FD2005A5,
+	U3CU3Ec__DisplayClass9_0__ctor_mCC665036E869E13B6E82BD8E59B9CACCB378AA7E,
+	U3CU3Ec__DisplayClass9_0_U3CLoginWithAppleIdU3Eb__0_mD11AED144D9782C535C6704EB8A81E18D7D70B2A,
+	AppleAuthQuickLoginArgs__ctor_m29E70947A3CB463F0138B6F58BC35EA58A851AB4,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	AppleError_get_Code_m961287BECF360B2EDAD83FA060A8C7FDB6418FD5,
+	AppleError_get_Domain_m63E5CABE6AF7F50CC0FB9B9C55D074AC01D22DDF,
+	AppleError_get_LocalizedDescription_m430AE126F8F82BCD7D41545FC20102B666C700E5,
+	AppleError_get_LocalizedRecoveryOptions_m70B334E472068D36B4797AF8BE86C641E347F564,
+	AppleError_get_LocalizedRecoverySuggestion_m2CA60B369F391895F8307B37BB767122522B29A9,
+	AppleError_get_LocalizedFailureReason_m51C96BF4FE7F7E50B5739793C800343D05489DB9,
+	AppleError_OnBeforeSerialize_mAEAD2F39FA81174491484481AD72D7B005DB67F7,
+	AppleError_OnAfterDeserialize_m0BCD7127B5E7D5505CE32993DA8F2A4D2AA592E2,
+	AppleError_ToString_m288F1388415E5031ED251BD778FED627F9BC0DC5,
+	AppleError__ctor_m66C93CADE0B99B97DD2891FDA0B886E2B02AADD1,
+	AppleIDCredential_get_IdentityToken_m34B56460123F4D5FA0F3F0E9F11889E776583355,
+	AppleIDCredential_get_AuthorizationCode_mF451C6107719D30009CC68965869BA7C0BD50CE8,
+	AppleIDCredential_get_State_m84B3905825D39FD46B45AF489FA8163247C74278,
+	AppleIDCredential_get_User_m981CFCEE8723C5A25E0C1F4DA3289D9831EA57F5,
+	AppleIDCredential_get_AuthorizedScopes_m1FC899AEECADDD9871C8622C6F08E73E812C9D92,
+	AppleIDCredential_get_FullName_mFD2563DD49DE8936E5F71447BA75E5D1836402D8,
+	AppleIDCredential_get_Email_m714C9A646F5DFE85592A0E4A9FD3E68689685ABE,
+	AppleIDCredential_get_RealUserStatus_mE69FF5EC598FB13CF28741DC57528CC2FFB9CF9E,
+	AppleIDCredential_OnBeforeSerialize_m131D67351E1C50C5B86C9DF5524BDDDE44AA0E61,
+	AppleIDCredential_OnAfterDeserialize_mB5366B49FF04AF0671E94C27ED9A3715EEB295C9,
+	AppleIDCredential__ctor_m51A44FA1D980EC9AF22D63D6072DB75A6FA01C63,
+	CredentialStateResponse_get_Success_m2AE6E6E1D34B0114F4C52C039174DDF9AFA6BC4D,
+	CredentialStateResponse_get_CredentialState_m65D7E15BA3EC5C3A7F367597A050193DD4209797,
+	CredentialStateResponse_get_Error_m57C00B45E8F57B0BE47A95942C096E33EE75E13C,
+	CredentialStateResponse_OnBeforeSerialize_mAC5BB42DE4654E67E38843519A7DC253F50850B5,
+	CredentialStateResponse_OnAfterDeserialize_mFB21B4973EF797A938B387C7055C5929051AEE60,
+	CredentialStateResponse__ctor_mD9EDB0D8782201A4B143772B6FE1140C1A20A6B3,
+	FullPersonName_get_PhoneticRepresentation_m4C047353D1B6B779000A36AD5A9E95112FB4B78D,
+	FullPersonName_OnAfterDeserialize_mD8D3FA785A18B097DA24A5346927BCE5891E2726,
+	FullPersonName__ctor_m26740204D45973B681D9A56AAEA22BA07054781B,
+	LoginWithAppleIdResponse_get_Success_mE6C377A510A993911F409C936A65584C9049779C,
+	LoginWithAppleIdResponse_get_Error_mCCC27C3D0F46A1D52F2CE2D969005696E8E5AE76,
+	LoginWithAppleIdResponse_get_AppleIDCredential_m8621F583B1DC2542599CD2C3A666A478660B2366,
+	LoginWithAppleIdResponse_get_PasswordCredential_mF712CF23994A66D33B5AE81DE4DB37BFE0900DD0,
+	LoginWithAppleIdResponse_OnBeforeSerialize_m7921D7B73269C8D01C61CD21A99F2D25E2A768D3,
+	LoginWithAppleIdResponse_OnAfterDeserialize_m5F4392761E520B362F204ADAA71470944CCB7226,
+	LoginWithAppleIdResponse__ctor_m559AF38D99EA5F01245B730C66C0C575A7D1DFA5,
+	PasswordCredential_get_User_m14F3321F1778473BAD88C092D9DB7E4E6EBA2BFE,
+	PasswordCredential_get_Password_m550FE9C9FFC658487D37E4CCBC81646AAA0B6971,
+	PasswordCredential_OnBeforeSerialize_m4BFB71F9E84B9BF858BD2B79B725972821DFE288,
+	PasswordCredential_OnAfterDeserialize_m16D32A34A6F6046F6333F7BB5F69193B37D0F2F5,
+	PasswordCredential__ctor_m752B85E2013BE8BDA5F98F2E2BFF18BDFBF7676D,
+	PayloadDeserializer_DeserializeCredentialStateResponse_mD711A60594EEB3B4A2B82769E58C745CC50FD516,
+	PayloadDeserializer_DeserializeLoginWithAppleIdResponse_mDD6FE763342C1ADB26C95A9F07ECE906FD33D22A,
+	PayloadDeserializer__ctor_mFBD229EF68EBE24EC32CA9609AA005AB90C65C42,
+	PersonName_get_NamePrefix_mD8E065B1341FE87F408B1A43AC98AB752EC37792,
+	PersonName_get_GivenName_m0284F3BF19006384CE40D9F2584E9B898E3167BB,
+	PersonName_get_MiddleName_mCFAC728FA738FF02EA1673A41528F15E771B0127,
+	PersonName_get_FamilyName_mFF3940EE55E62FC22A6CFA6975BCCFF796D6BB26,
+	PersonName_get_NameSuffix_m28CC64A01463A58CF35EFC6A4CE6CFADCB2518E8,
+	PersonName_get_Nickname_m678081BDCCFFD3DED731F9AB66F7FB350166B4C1,
+	PersonName_get_PhoneticRepresentation_m89AA341DA25ACEBFAA1E062842E646B1165A99DB,
+	PersonName_OnBeforeSerialize_m4D57A809AC62FE6817EB498247E4AEE5B8B0B510,
+	PersonName_OnAfterDeserialize_m62A1515986426365B43F5A7BF5B7FB130EDA0D6E,
+	PersonName__ctor_m0F0E4933C32F156BAA3F4DB66D4BE72313F76C55,
+	SerializationTools_FixSerializationForString_mF3AF273F198E247A988066CBE929451830480D5F,
+	NULL,
+	NULL,
+	SerializationTools_GetBytesFromBase64String_m4C24E80BE8646637F981906DDC1DC001C4785D9F,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	AppleErrorExtensions_GetAuthorizationErrorCode_m2D356E9280D7A2C580B337A9CCC9B65E32746219,
+	PersonNameExtensions_ToLocalizedString_mD357263F722B7C188313D67D6C54495393189E83,
+	PersonNameExtensions_JsonStringForPersonName_m2A357011D95700D4B9746149A1F9E66233A468FD,
+	PersonNameExtensions_TryAddKeyValue_mF2DF9ED2C6B7FC8D497AD58CDDD250B090D13FDB,
+	PInvoke_AppleAuth_GetPersonNameUsingFormatter_mE6BD0DE775A27C2C2A3878458E1F38B411908F5E,
+};
+extern void AppleAuthLoginArgs__ctor_m979F04437958F29BD5E8FBB8B91085932E47DEC2_AdjustorThunk (void);
+extern void AppleAuthQuickLoginArgs__ctor_m29E70947A3CB463F0138B6F58BC35EA58A851AB4_AdjustorThunk (void);
+static Il2CppTokenAdjustorThunkPair s_adjustorThunks[2] = 
+{
+	{ 0x06000003, AppleAuthLoginArgs__ctor_m979F04437958F29BD5E8FBB8B91085932E47DEC2_AdjustorThunk },
+	{ 0x0600002F, AppleAuthQuickLoginArgs__ctor_m29E70947A3CB463F0138B6F58BC35EA58A851AB4_AdjustorThunk },
+};
+static const int32_t s_InvokerIndices[149] = 
+{
+	10627,
+	7062,
+	1667,
+	10617,
+	10559,
+	5665,
+	3153,
+	1591,
+	1667,
+	1590,
+	1734,
+	5665,
+	7062,
+	10430,
+	10430,
+	10430,
+	10430,
+	9691,
+	10617,
+	9520,
+	10440,
+	10617,
+	2590,
+	10617,
+	7062,
+	5665,
+	7062,
+	7062,
+	9691,
+	10559,
+	10430,
+	9691,
+	8333,
+	8964,
+	10440,
+	10430,
+	3151,
+	3219,
+	1047,
+	5665,
+	7062,
+	5665,
+	7062,
+	5665,
+	7062,
+	5665,
+	3153,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	6896,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	7062,
+	7062,
+	6929,
+	7062,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	6896,
+	7062,
+	7062,
+	7062,
+	6829,
+	6896,
+	6929,
+	7062,
+	7062,
+	7062,
+	6929,
+	7062,
+	7062,
+	6829,
+	6929,
+	6929,
+	6929,
+	7062,
+	7062,
+	7062,
+	6929,
+	6929,
+	7062,
+	7062,
+	7062,
+	5024,
+	5024,
+	7062,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	6929,
+	7062,
+	7062,
+	7062,
+	10419,
+	0,
+	0,
+	9380,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	0,
+	10034,
+	8668,
+	10150,
+	8318,
+	8668,
+};
+static const Il2CppTokenIndexMethodTuple s_reversePInvokeIndices[1] = 
+{
+	{ 0x0600001D, 67,  (void**)&PInvoke_NativeMessageHandlerCallback_m510C41EC925617E298CB67DC823D4680FA08F45F_RuntimeMethod_var, 0 },
+};
+static const Il2CppTokenRangePair s_rgctxIndices[2] = 
+{
+	{ 0x0600006F, { 0, 1 } },
+	{ 0x06000070, { 1, 2 } },
+};
+extern const uint32_t g_rgctx_TU5BU5DU26_t8CB61029E98BBCDAEEC5DE4544C2E3E92307DF81;
+extern const uint32_t g_rgctx_TU26_tF015DADCBD49996F8926662D4A9965AF0429B47F;
+extern const uint32_t g_rgctx_T_t7840C5D16F8B62F75615A656A02CEE7FDC86F9BC;
+static const Il2CppRGCTXDefinition s_rgctxValues[3] = 
+{
+	{ (Il2CppRGCTXDataType)2, (const void *)&g_rgctx_TU5BU5DU26_t8CB61029E98BBCDAEEC5DE4544C2E3E92307DF81 },
+	{ (Il2CppRGCTXDataType)2, (const void *)&g_rgctx_TU26_tF015DADCBD49996F8926662D4A9965AF0429B47F },
+	{ (Il2CppRGCTXDataType)2, (const void *)&g_rgctx_T_t7840C5D16F8B62F75615A656A02CEE7FDC86F9BC },
+};
+IL2CPP_EXTERN_C const Il2CppCodeGenModule g_AppleAuth_CodeGenModule;
+const Il2CppCodeGenModule g_AppleAuth_CodeGenModule = 
+{
+	"AppleAuth.dll",
+	149,
+	s_methodPointers,
+	2,
+	s_adjustorThunks,
+	s_InvokerIndices,
+	1,
+	s_reversePInvokeIndices,
+	2,
+	s_rgctxIndices,
+	3,
+	s_rgctxValues,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+};
