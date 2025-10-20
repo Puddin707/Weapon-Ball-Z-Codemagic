@@ -33,6 +33,27 @@ workflows:
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" Info.plist || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string ${BUILD_NUMBER}" Info.plist
           echo "✅ Set CFBundleShortVersionString=${CF_BUNDLE_SHORT_VERSION}, CFBundleVersion=${BUILD_NUMBER}"
 
+- name: Fix CocoaPods repos (remove master, use CDN)
+  script: |
+    set -e
+    set -o pipefail
+
+    echo "→ Repo list trước khi sửa:"
+    pod repo list || true
+
+    # Gỡ repo 'master' cũ (đã deprecated)
+    if pod repo list | grep -q "/repos/master"; then
+      echo "→ Removing deprecated 'master' specs repo…"
+      pod repo remove master || true
+    fi
+
+    # Đảm bảo dùng CDN 'trunk'
+    pod repo add trunk https://cdn.cocoapods.org/ || true
+    pod repo update trunk
+
+    echo "→ Repo list sau khi sửa:"
+    pod repo list
+
       - name: Cài CocoaPods
         script: |
           set -e
