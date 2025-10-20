@@ -11,7 +11,6 @@ workflows:
         XCODE_WORKSPACE: "Unity-iPhone.xcworkspace"
         APP_BUNDLE_ID: "com.galacticozstudio.weaponballz"
         CF_BUNDLE_SHORT_VERSION: "1.0"
-        # Khuyến nghị set trong group:
         # APP_STORE_TEAM_ID: "ABCDEFGHIJ"   # Team ID 10 ký tự
 
     cache:
@@ -22,7 +21,6 @@ workflows:
         - ~/Library/Developer/Xcode/DerivedData
 
     scripts:
-      # 0) Auto-detect thư mục iOS (root hay ./ios)
       - name: Detect iOS directory
         script: |
           set -euo pipefail
@@ -51,7 +49,6 @@ workflows:
             echo "✅ Version=${CF_BUNDLE_SHORT_VERSION} Build=${BUILD_NUMBER}"
           fi
 
-      # 1) Dọn specs 1 lần nếu còn 'master' (siêu nhanh)
       - name: Fix CocoaPods specs (one-time cleanup)
         script: |
           set -euo pipefail
@@ -63,7 +60,6 @@ workflows:
             echo "→ No 'master' repo found. Skipping."
           fi
 
-      # 2) Cài CocoaPods có cache (chỉ repo-update khi cần)
       - name: Install CocoaPods (cache-aware, fast)
         script: |
           set -euo pipefail
@@ -74,7 +70,6 @@ workflows:
           export COCOAPODS_DISABLE_STATS=1
 
           if [ -f "$IOS_DIR/Podfile" ]; then
-            # Hash Podfile + lock để xác định cache hợp lệ
             HASH_FILE="$CM_BUILD_DIR/pods.hash"
             if [ -f "$IOS_DIR/Podfile.lock" ]; then
               shasum -a 256 "$IOS_DIR/Podfile" "$IOS_DIR/Podfile.lock" | shasum -a 256 | awk '{print $1}' > "$HASH_FILE"
@@ -98,37 +93,32 @@ workflows:
             echo "ℹ️ Không có $IOS_DIR/Podfile — bỏ qua CocoaPods."
           fi
 
-      # 3) Tải & gắn provisioning profile đúng capability (IAP + Sign in with Apple)
+      # --- SIGNING (đÃ SỬA ĐÚNG CÚ PHÁP) ---
       - name: Fetch signing files from App Store Connect
         script: |
           set -euo pipefail
           keychain initialize
+          # Lệnh đúng: không có --bundle-identifier/--output
           app-store-connect fetch-signing-files "$APP_BUNDLE_ID" \
             --type IOS_APP_STORE \
-            --bundle-identifier "$APP_BUNDLE_ID" \
-            --output "./signing"
-          ls -la ./signing
+            --create
+          # Nếu team bạn chưa bật integration trong Codemagic, thêm 3 flag:
+          #   --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+          #   --key-id "$APP_STORE_CONNECT_KEY_ID" \
+          #   --private-key "$APP_STORE_CONNECT_PRIVATE_KEY"
+          ls -la ~/Library/codemagic-cli-tools/profiles || true
+          ls -la ~/Library/codemagic-cli-tools/certificates || true
 
       - name: Use provisioning profiles for Xcode project
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
+          # Import tất cả certs đã được fetch (CLI tự lấy đường dẫn mặc định)
+          keychain add-certificates --password "${CERT_PASSWORD:-}"
+          # Áp profile/cert vào project (tự tìm profile phù hợp bundle)
+          xcode-project use-profiles --project "$IOS_DIR/Unity-iPhone.xcodeproj" || true
+      # --- END SIGNING ---
 
-          if ls ./signing/*.p12 >/dev/null 2>&1; then
-            keychain add-certificates --certificate ./signing/*.p12 --password "${CERT_PASSWORD:-}"
-          fi
-
-          xcode-project use-profiles \
-            --project "$IOS_DIR/Unity-iPhone.xcodeproj" \
-            --target "Unity-iPhone" \
-            --profile "./signing/*.mobileprovision" || true
-
-          xcode-project use-profiles \
-            --project "$IOS_DIR/Unity-iPhone.xcodeproj" \
-            --target "UnityFramework" \
-            --profile "./signing/*.mobileprovision" || true
-
-      # 4) Archive (log raw + xcpretty) — có fallback khi thiếu TEAM ID
       - name: Xcode Archive (raw log + xcpretty)
         script: |
           set -euo pipefail
@@ -203,4 +193,5 @@ workflows:
         key_id: $APP_STORE_CONNECT_KEY_ID
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
+
 
