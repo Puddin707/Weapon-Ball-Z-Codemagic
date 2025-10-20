@@ -5,19 +5,15 @@ use_frameworks! :linkage => :static
 inhibit_all_warnings!
 
 target 'UnityFramework' do
-  # Firebase 12: KHÔNG dùng 'Firebase/Core' (đã deprecated)
-  pod 'Firebase/Auth', '12.2.0'
-  pod 'Firebase/Functions', '12.2.0'
-  pod 'FirebaseFirestore', '12.2.0'
+  # Firebase 12: KHÔNG dùng 'Firebase/Core'
+  pod 'Firebase/Auth',       '12.2.0'
+  pod 'Firebase/Functions',  '12.2.0'
+  pod 'FirebaseFirestore',   '12.2.0'
 
-  # GoogleSignIn 6.x (giữ cho code Obj-C cũ)
-  pod 'GoogleSignIn', '~> 6.0.2'
+  # Quan trọng: lên 7.x để tương thích GTMSessionFetcher 3.x
+  pod 'GoogleSignIn',        '~> 7.0'
 
-  pod 'UnityAds', '~> 4.12.0'
-
-  # (Tùy chọn) khóa nhẹ để tránh vấp version khi CocoaPods resolve:
-  # pod 'AppAuth', '~> 1.7'
-  # pod 'GTMAppAuth', '~> 1.4'
+  pod 'UnityAds',            '~> 4.12.0'
 end
 
 target 'Unity-iPhone' do
