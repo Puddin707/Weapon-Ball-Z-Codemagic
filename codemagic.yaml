@@ -93,6 +93,20 @@ workflows:
             echo "ℹ️ Không có $IOS_DIR/Podfile — bỏ qua CocoaPods."
           fi
 
+      - name: Import Apple Distribution certificate (.p12)
+        script: |
+          set -euo pipefail
+          mkdir -p signing
+          if [ -z "${APPLE_CERT_P12_BASE64:-}" ]; then
+            echo "❌ APPLE_CERT_P12_BASE64 missing"; exit 1
+          fi
+          # Giải mã base64 -> tạo file p12 tạm
+          echo "$APPLE_CERT_P12_BASE64" | base64 --decode > signing/distribution.p12
+          # Tạo keychain (nếu chưa có) & import p12 (dùng CERT_PASSWORD)
+          keychain initialize || true
+          keychain add-certificates --certificate signing/distribution.p12 --password "${CERT_PASSWORD:-}"
+          echo "✅ Imported .p12 into keychain"
+
       # --- SIGNING (SỬA LẠI CHO CHẮC CHẮN VỀ CREDENTIAL NAMES) ---
       - name: Fetch signing files from App Store Connect
         script: |
