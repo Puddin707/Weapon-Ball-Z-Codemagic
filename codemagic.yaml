@@ -11,7 +11,6 @@ workflows:
         XCODE_WORKSPACE: "Unity-iPhone.xcworkspace"
         APP_BUNDLE_ID: "com.galacticozstudio.weaponballz"
         CF_BUNDLE_SHORT_VERSION: "1.0"
-        # BẮT BUỘC có trong Env vars / Groups:
         # APP_STORE_TEAM_ID: "<10-ký-tự-team-id>"
 
     cache:
@@ -22,7 +21,6 @@ workflows:
         - ~/Library/Developer/Xcode/DerivedData
 
     scripts:
-      # 0) Tự nhận diện thư mục iOS (root hay ./ios)
       - name: Detect iOS directory
         script: |
           set -euo pipefail
@@ -37,10 +35,8 @@ workflows:
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
-
           ls -la "$IOS_DIR"
           test -d "$IOS_DIR/Classes" || { echo "❌ Không thấy folder Classes trong $IOS_DIR (repo không phải iOS export?)"; exit 1; }
-
           if [ ! -f "$IOS_DIR/Info.plist" ]; then
             echo "⚠️ Không thấy $IOS_DIR/Info.plist — kiểm tra lại path nếu cần."
           fi
@@ -49,7 +45,6 @@ workflows:
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
-
           if [ -f "$IOS_DIR/Info.plist" ]; then
             /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${CF_BUNDLE_SHORT_VERSION}" "$IOS_DIR/Info.plist" || /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string ${CF_BUNDLE_SHORT_VERSION}" "$IOS_DIR/Info.plist"
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" "$IOS_DIR/Info.plist" || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string ${BUILD_NUMBER}" "$IOS_DIR/Info.plist"
@@ -58,36 +53,37 @@ workflows:
             echo "⚠️ Bỏ qua cập nhật Info.plist vì không tìm thấy."
           fi
 
-      # 1) Dọn specs: GỠ 'master' git repo (đừng add 'trunk' vì trunk là CDN)
       - name: Fix CocoaPods specs (use CDN, remove master)
         script: |
           set -euo pipefail
           echo "→ Repo list trước khi sửa:"; pod repo list || true
-
           if pod repo list | grep -q "/repos/master"; then
             echo "→ Removing deprecated 'master' specs repo…"
             pod repo remove master || true
             rm -rf ~/.cocoapods/repos/master || true
           fi
-
           echo "→ Repo list sau khi sửa:"; pod repo list || true
           echo "✅ Specs repo đã dọn xong. CocoaPods sẽ dùng CDN theo Podfile."
 
-      # 2) Cài CocoaPods + pod install (log chi tiết)
+      # >>> INSERTED STEP <<<
+      - name: Clean CocoaPods lock (force resolve new versions)
+        script: |
+          set -euo pipefail
+          IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
+          if [ -f "$IOS_DIR/Podfile.lock" ] || [ -d "$IOS_DIR/Pods" ]; then
+            echo "→ Removing old Podfile.lock & Pods/ to avoid stale constraints"
+            rm -rf "$IOS_DIR/Podfile.lock" "$IOS_DIR/Pods"
+          fi
+
       - name: Cài CocoaPods
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
-
           if ! command -v pod >/dev/null 2>&1; then
             sudo gem install cocoapods -v 1.15.2 --no-document
           fi
           pod --version
-
           export COCOAPODS_DISABLE_STATS=1
-          # (Tùy chọn) dọn cache repo local cũ cho sạch hẳn nếu CI lưu cache:
-          # rm -rf ~/.cocoapods/repos/* || true
-
           if [ -f "$IOS_DIR/Podfile" ]; then
             echo "→ pod install tại: $IOS_DIR"
             (cd "$IOS_DIR" && pod install --repo-update --verbose) 2>&1 | tee "$CM_BUILD_DIR/pod_install.log"
@@ -113,16 +109,13 @@ workflows:
           </plist>
           PLIST
 
-      # 3) Build (ghi raw log + xcpretty) — giống Xcode
       - name: Xcode Archive (raw log + xcpretty)
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
           export NSUnbufferedIO=YES
-
           LOG_RAW="$CM_BUILD_DIR/xcodebuild-archive.raw.log"
           RESULT_BUNDLE="$CM_BUILD_DIR/ResultBundle.xcresult"
-
           if [ -f "$IOS_DIR/${XCODE_WORKSPACE}" ]; then
             echo "➡️ Build bằng workspace: $IOS_DIR/${XCODE_WORKSPACE}"
             (cd "$IOS_DIR" && xcodebuild \
@@ -136,9 +129,7 @@ workflows:
               -resultBundlePath "$RESULT_BUNDLE" \
               -allowProvisioningUpdates \
               -showBuildTimingSummary \
-              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || {
-                echo "⛔️ Build failed. Last 200 lines of raw log:"; tail -n 200 "$LOG_RAW"; exit 1;
-              }
+              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || { echo "⛔️ Build failed. Last 200 lines of raw log:"; tail -n 200 "$LOG_RAW"; exit 1; }
           else
             echo "➡️ Không có workspace → build bằng project .xcodeproj"
             (cd "$IOS_DIR" && xcodebuild \
@@ -152,9 +143,7 @@ workflows:
               -resultBundlePath "$RESULT_BUNDLE" \
               -allowProvisioningUpdates \
               -showBuildTimingSummary \
-              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || {
-                echo "⛔️ Build failed. Last 200 lines of raw log:"; tail -n 200 "$LOG_RAW"; exit 1;
-              }
+              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || { echo "⛔️ Build failed. Last 200 lines of raw log:"; tail -n 200 "$LOG_RAW"; exit 1; }
           fi
           echo "✅ Archive done"
 
@@ -167,9 +156,7 @@ workflows:
             -exportOptionsPlist ExportOptions.plist \
             -exportPath "$CM_BUILD_DIR/ipa" \
             -allowProvisioningUpdates \
-            | tee "$LOG_EXPORT" | xcpretty --no-color || {
-              echo "⛔️ Export failed. Last 200 lines:"; tail -n 200 "$LOG_EXPORT"; exit 1;
-            }
+            | tee "$LOG_EXPORT" | xcpretty --no-color || { echo "⛔️ Export failed. Last 200 lines:"; tail -n 200 "$LOG_EXPORT"; exit 1; }
           ls -la "$CM_BUILD_DIR/ipa"
           echo "✅ Export IPA done"
 
@@ -186,12 +173,7 @@ workflows:
 
     publishing:
       app_store_connect:
-        api_key: $APP_STORE_CONNECT_PRIVATE_KEY  # nội dung .p8 (đủ header/footer)
-        key_id: $APP_STORE_CONNECT_KEY_ID        # 10 ký tự
-        issuer_id: $APP_STORE_CONNECT_ISSUER_ID  # UUID
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
-        # beta_groups:
-        #   - Internal Testers
-        # options:
-        #   changelog: "Build $BUILD_NUMBER - Unity iOS export via Codemagic"
-
