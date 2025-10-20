@@ -5,13 +5,14 @@ workflows:
 
     environment:
       groups:
-        - app_store_connect  # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_PRIVATE_KEY
+        - app_store_connect  # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_PRIVATE_KEY (+APP_STORE_TEAM_ID)
       vars:
         XCODE_SCHEME: "Unity-iPhone"
         XCODE_WORKSPACE: "Unity-iPhone.xcworkspace"
         APP_BUNDLE_ID: "com.galacticozstudio.weaponballz"
         CF_BUNDLE_SHORT_VERSION: "1.0"
-        # APP_STORE_TEAM_ID: "<10-ký-tự-team-id>"
+        # Khuyến nghị set trong group:
+        # APP_STORE_TEAM_ID: "ABCDEFGHIJ"   # Team ID 10 ký tự
 
     cache:
       cache_paths:
@@ -21,6 +22,7 @@ workflows:
         - ~/Library/Developer/Xcode/DerivedData
 
     scripts:
+      # 0) Auto-detect thư mục iOS (root hay ./ios)
       - name: Detect iOS directory
         script: |
           set -euo pipefail
@@ -37,78 +39,96 @@ workflows:
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
           ls -la "$IOS_DIR"
           test -d "$IOS_DIR/Classes" || { echo "❌ Không thấy folder Classes trong $IOS_DIR (repo không phải iOS export?)"; exit 1; }
-          if [ ! -f "$IOS_DIR/Info.plist" ]; then
-            echo "⚠️ Không thấy $IOS_DIR/Info.plist — kiểm tra lại path nếu cần."
-          fi
+          [ -f "$IOS_DIR/Info.plist" ] || echo "⚠️ Không thấy $IOS_DIR/Info.plist — kiểm tra lại path nếu cần."
 
-      - name: Cập nhật build number (CFBundleVersion) & version name
+      - name: Cập nhật CFBundleShortVersion/CFBundleVersion
         script: |
           set -euo pipefail
           IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
           if [ -f "$IOS_DIR/Info.plist" ]; then
             /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${CF_BUNDLE_SHORT_VERSION}" "$IOS_DIR/Info.plist" || /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string ${CF_BUNDLE_SHORT_VERSION}" "$IOS_DIR/Info.plist"
             /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" "$IOS_DIR/Info.plist" || /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string ${BUILD_NUMBER}" "$IOS_DIR/Info.plist"
-            echo "✅ Set CFBundleShortVersionString=${CF_BUNDLE_SHORT_VERSION}, CFBundleVersion=${BUILD_NUMBER}"
-          else
-            echo "⚠️ Bỏ qua cập nhật Info.plist vì không tìm thấy."
+            echo "✅ Version=${CF_BUNDLE_SHORT_VERSION} Build=${BUILD_NUMBER}"
           fi
 
-      - name: Fix CocoaPods specs (use CDN, remove master)
+      # 1) Dọn specs 1 lần nếu còn 'master' (siêu nhanh)
+      - name: Fix CocoaPods specs (one-time cleanup)
         script: |
           set -euo pipefail
-          echo "→ Repo list trước khi sửa:"; pod repo list || true
-          if pod repo list | grep -q "/repos/master"; then
+          if pod repo list 2>/dev/null | grep -q "/repos/master"; then
             echo "→ Removing deprecated 'master' specs repo…"
             pod repo remove master || true
             rm -rf ~/.cocoapods/repos/master || true
-          fi
-          echo "→ Repo list sau khi sửa:"; pod repo list || true
-          echo "✅ Specs repo đã dọn xong. CocoaPods sẽ dùng CDN theo Podfile."
-
-      # >>> INSERTED STEP <<<
-      - name: Clean CocoaPods lock (force resolve new versions)
-        script: |
-          set -euo pipefail
-          IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
-          if [ -f "$IOS_DIR/Podfile.lock" ] || [ -d "$IOS_DIR/Pods" ]; then
-            echo "→ Removing old Podfile.lock & Pods/ to avoid stale constraints"
-            rm -rf "$IOS_DIR/Podfile.lock" "$IOS_DIR/Pods"
-          fi
-
-      - name: Cài CocoaPods
-        script: |
-          set -euo pipefail
-          IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
-          if ! command -v pod >/dev/null 2>&1; then
-            sudo gem install cocoapods -v 1.15.2 --no-document
-          fi
-          pod --version
-          export COCOAPODS_DISABLE_STATS=1
-          if [ -f "$IOS_DIR/Podfile" ]; then
-            echo "→ pod install tại: $IOS_DIR"
-            (cd "$IOS_DIR" && pod install --repo-update --verbose) 2>&1 | tee "$CM_BUILD_DIR/pod_install.log"
-            echo "✅ CocoaPods done"
           else
-            echo "ℹ️ Không có $IOS_DIR/Podfile — với Firebase/Google nên có Podfile để build ổn định."
+            echo "→ No 'master' repo found. Skipping."
           fi
 
-      - name: Generate ExportOptions.plist (App Store)
+      # 2) Cài CocoaPods có cache (chỉ repo-update khi cần)
+      - name: Install CocoaPods (cache-aware, fast)
         script: |
           set -euo pipefail
-          cat > ExportOptions.plist << 'PLIST'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-            <dict>
-              <key>method</key><string>app-store</string>
-              <key>signingStyle</key><string>automatic</string>
-              <key>uploadBitcode</key><false/>
-              <key>compileBitcode</key><false/>
-              <key>destination</key><string>export</string>
-            </dict>
-          </plist>
-          PLIST
+          IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
 
+          command -v pod >/dev/null 2>&1 || sudo gem install cocoapods -v 1.15.2 --no-document
+          echo "CocoaPods $(pod --version)"
+          export COCOAPODS_DISABLE_STATS=1
+
+          if [ -f "$IOS_DIR/Podfile" ]; then
+            # Hash Podfile + lock để xác định cache hợp lệ
+            HASH_FILE="$CM_BUILD_DIR/pods.hash"
+            if [ -f "$IOS_DIR/Podfile.lock" ]; then
+              shasum -a 256 "$IOS_DIR/Podfile" "$IOS_DIR/Podfile.lock" | shasum -a 256 | awk '{print $1}' > "$HASH_FILE"
+            else
+              shasum -a 256 "$IOS_DIR/Podfile" | awk '{print $1}' > "$HASH_FILE"
+            fi
+
+            if [ -d "$IOS_DIR/Pods" ] && [ -f "$IOS_DIR/Pods/.pods.hash" ] && cmp -s "$HASH_FILE" "$IOS_DIR/Pods/.pods.hash"; then
+              echo "✅ Pods cache valid → skip pod install"
+            else
+              echo "→ Installing pods in $IOS_DIR"
+              if [ -f "$IOS_DIR/Podfile.lock" ]; then
+                (cd "$IOS_DIR" && pod install --deployment) || (cd "$IOS_DIR" && pod install --repo-update)
+              else
+                (cd "$IOS_DIR" && pod install --repo-update)
+              fi
+              cp "$HASH_FILE" "$IOS_DIR/Pods/.pods.hash" || true
+              echo "✅ CocoaPods done"
+            fi
+          else
+            echo "ℹ️ Không có $IOS_DIR/Podfile — bỏ qua CocoaPods."
+          fi
+
+      # 3) Tải & gắn provisioning profile đúng capability (IAP + Sign in with Apple)
+      - name: Fetch signing files from App Store Connect
+        script: |
+          set -euo pipefail
+          keychain initialize
+          app-store-connect fetch-signing-files "$APP_BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --bundle-identifier "$APP_BUNDLE_ID" \
+            --output "./signing"
+          ls -la ./signing
+
+      - name: Use provisioning profiles for Xcode project
+        script: |
+          set -euo pipefail
+          IOS_DIR=$(cut -d= -f2 "$CM_BUILD_DIR/ios_dir.txt")
+
+          if ls ./signing/*.p12 >/dev/null 2>&1; then
+            keychain add-certificates --certificate ./signing/*.p12 --password "${CERT_PASSWORD:-}"
+          fi
+
+          xcode-project use-profiles \
+            --project "$IOS_DIR/Unity-iPhone.xcodeproj" \
+            --target "Unity-iPhone" \
+            --profile "./signing/*.mobileprovision" || true
+
+          xcode-project use-profiles \
+            --project "$IOS_DIR/Unity-iPhone.xcodeproj" \
+            --target "UnityFramework" \
+            --profile "./signing/*.mobileprovision" || true
+
+      # 4) Archive (log raw + xcpretty) — có fallback khi thiếu TEAM ID
       - name: Xcode Archive (raw log + xcpretty)
         script: |
           set -euo pipefail
@@ -116,6 +136,12 @@ workflows:
           export NSUnbufferedIO=YES
           LOG_RAW="$CM_BUILD_DIR/xcodebuild-archive.raw.log"
           RESULT_BUNDLE="$CM_BUILD_DIR/ResultBundle.xcresult"
+
+          TEAM_ARG=()
+          if [ -n "${APP_STORE_TEAM_ID:-}" ]; then TEAM_ARG=(DEVELOPMENT_TEAM="${APP_STORE_TEAM_ID}"); else echo "⚠️ APP_STORE_TEAM_ID unset → dùng team theo profile."; fi
+          BUNDLE_ARG=()
+          if [ -n "${APP_BUNDLE_ID:-}" ]; then BUNDLE_ARG=(PRODUCT_BUNDLE_IDENTIFIER="${APP_BUNDLE_ID}"); fi
+
           if [ -f "$IOS_DIR/${XCODE_WORKSPACE}" ]; then
             echo "➡️ Build bằng workspace: $IOS_DIR/${XCODE_WORKSPACE}"
             (cd "$IOS_DIR" && xcodebuild \
@@ -123,13 +149,13 @@ workflows:
               -scheme "${XCODE_SCHEME}" \
               -configuration Release \
               -destination "generic/platform=iOS" \
-              DEVELOPMENT_TEAM="${APP_STORE_TEAM_ID}" \
-              PRODUCT_BUNDLE_IDENTIFIER="${APP_BUNDLE_ID}" \
+              "${TEAM_ARG[@]}" \
+              "${BUNDLE_ARG[@]}" \
               -archivePath "$CM_BUILD_DIR/build.xcarchive" \
               -resultBundlePath "$RESULT_BUNDLE" \
               -allowProvisioningUpdates \
               -showBuildTimingSummary \
-              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || { echo "⛔️ Build failed. Last 200 lines of raw log:"; tail -n 200 "$LOG_RAW"; exit 1; }
+              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || { echo "⛔️ Build failed. Last 200 lines:"; tail -n 200 "$LOG_RAW"; exit 1; }
           else
             echo "➡️ Không có workspace → build bằng project .xcodeproj"
             (cd "$IOS_DIR" && xcodebuild \
@@ -137,13 +163,13 @@ workflows:
               -scheme "${XCODE_SCHEME}" \
               -configuration Release \
               -destination "generic/platform=iOS" \
-              DEVELOPMENT_TEAM="${APP_STORE_TEAM_ID}" \
-              PRODUCT_BUNDLE_IDENTIFIER="${APP_BUNDLE_ID}" \
+              "${TEAM_ARG[@]}" \
+              "${BUNDLE_ARG[@]}" \
               -archivePath "$CM_BUILD_DIR/build.xcarchive" \
               -resultBundlePath "$RESULT_BUNDLE" \
               -allowProvisioningUpdates \
               -showBuildTimingSummary \
-              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || { echo "⛔️ Build failed. Last 200 lines of raw log:"; tail -n 200 "$LOG_RAW"; exit 1; }
+              clean archive) | tee "$LOG_RAW" | xcpretty --no-color || { echo "⛔️ Build failed. Last 200 lines:"; tail -n 200 "$LOG_RAW"; exit 1; }
           fi
           echo "✅ Archive done"
 
@@ -177,3 +203,4 @@ workflows:
         key_id: $APP_STORE_CONNECT_KEY_ID
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
+
