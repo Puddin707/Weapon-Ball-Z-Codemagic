@@ -5,15 +5,19 @@ use_frameworks! :linkage => :static
 inhibit_all_warnings!
 
 target 'UnityFramework' do
-  # Firebase 12 không cần 'Firebase/Core' (đã deprecated).
+  # Firebase 12: KHÔNG dùng 'Firebase/Core' (đã deprecated)
   pod 'Firebase/Auth', '12.2.0'
   pod 'Firebase/Functions', '12.2.0'
   pod 'FirebaseFirestore', '12.2.0'
 
-  # GoogleSignIn: bạn đang dùng 6.x (Obj-C). OK, nhưng có thể cân nhắc 7.x nếu code đã cập nhật.
+  # GoogleSignIn 6.x (giữ cho code Obj-C cũ)
   pod 'GoogleSignIn', '~> 6.0.2'
 
   pod 'UnityAds', '~> 4.12.0'
+
+  # (Tùy chọn) khóa nhẹ để tránh vấp version khi CocoaPods resolve:
+  # pod 'AppAuth', '~> 1.7'
+  # pod 'GTMAppAuth', '~> 1.4'
 end
 
 target 'Unity-iPhone' do
